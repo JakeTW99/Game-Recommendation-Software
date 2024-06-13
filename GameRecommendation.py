@@ -1,50 +1,101 @@
-genres = ["RPG (Role-Playing Game)", "Action/Adventure", "Fighting", "Puzzle", "Sports/Racing", "FPS (First-Person Shooter)", "Horror/Survival Horror"]
+from linkedlist import LinkedList
+from gamedata import *
 
-platforms = ["PS5, Xbox Series X/S", "Nintendo Switch", "PC"]
+# Inserting genres into a LinkedList
+def insert_genres():
+    genre_list = LinkedList()
+    for genre in genres:
+        genre_list.insert_beginning(genre)
+    return genre_list
 
-#data info is formatted as follows: [name/title of game, genre, opencritic score, platform(s)]
-game_data = [["The Elders Scrolls V: Skyrim - Special Edition", "RPG (Role-Playing Game)", "83", "PS5, Xbox Series X/S, Nintendo Switch, PC"], 
-             ["Baldur's Gate 3", "RPG (Role-Playing Game)", "96", "PS5, PC"], 
-             ["Elden Ring", "RPG (Role-Playing Game)", "95", "PS5, Xbox Series X/S, PC"],
-             ["Cyberpunk 2077", "RPG (Role-Playing Game)", "83", "PS5, Xbox Series X/S, PC"],
-             ["Disco Elysium", "RPG (Role-Playing Game)", "91", "PS5, Xbox Series X/S, Nintendo Switch, PC"],
-             ["Diablo III", "RPG (Role-Playing Game)", "88", "PS5, Xbox Series X/S, Nintendo Switch, PC", ],
-             ["Marvel's Guardians of the Galaxy", "Action/Adventure", "82", "PS5, Xbox Series X/S, Nintendo Switch, PC"],
-             ["God of War", "Action/Adventure", "94", "PS5, PC"],
-             ["Red Dead Redemption 2", "Action/Adventure", "96", "PS5, Xbox Series X/S, PC"],
-             ["A Way Out", "Action/Adventue", "79", "PS5, Xbox Series X/S, PC"],
-             ["Marvel's Spider-Man 2", "Action/Adventure", "90", "PS5"],
-             ["Star Wars Jedi: Fallen Order", "Action/Adventure", "82", "PS5, Xbox Series X/S, PC"],
-             ["Guilty Gear -Strive-", "Fighting", "86", "PS5"],
-             ["Street Fighter 6", "Fighting", "92", "PS5, Xbox Series X/S, PC"],
-             ["Dragon Ball FighterZ", "Fighting", "86", "PS5, Xbox Series X/S, PC"],
-             ["Ultimate Marvel vs. Capcom 3 (HD Edition)", "Fighting", "78", "PS5, Xbox Series X/S, PC"],
-             ["Killer Instinct", "Fighting", "77", "Xbox Series X/S, PC"],
-             ["Mortal Kombat 1", "Fighting", "84", "PS5, Xbox Series X/S, Nintendo Switch, PC"],
-             ["Return of the Obra Dinn", "Puzzle", "89", "PS5, Xbox Series X/S, Nintendo Switch, PC"],
-             ["The Witness", "Puzzle", "86", "PS5, Xbox Series X/S, PC"],
-             ["The Talos Principle", "Puzzle", "87", "PS5, PC"],
-             ["Portal 2", "Puzzle", "93", "Nintendo Switch, PC"],
-             ["Baba Is You", "Puzzle", "84", "Nintendo Switch, PC"],
-             ["Return to Monkey Island", "Puzzle", "87", "Nintendo Switch, PC"],
-             ["EA Sports FC 24", "Sports/Racing", "74", "PS5, Xbox Series X/S, Nintendo Switch, PC"],
-             ["Madden NFL 24", "Sports/Racing", "66", "PS5, Xbox Series X/S, PC"],
-             ["NBA 2K24", "Sports/Racing", "68", "PS5, Xbox Series X/S, PC"],
-             ["Tony Hawk's Pro Skater 1 + 2", "Sports/Racing" "89", "PS5, Xbox Series X/S, PC"],
-             ["Rocket League", "Sports/Racing", "87", "PS5, Xbox Series X/S, Nintendo Switch, PC"],
-             ["Forza Motorsport", "Sports/Racing", "84", "Xbox Series X/S, PC"],
-             ["Call of Duty: Modern Warfare III", "FPS (First-Person Shooter)", "58", "PS5, Xbox Series X/S, PC"],
-             ["Counter-Strike 2", "FPS (First-Person Shooter)", "80", "PC"],
-             ["Tom Clancy's Rainbow Six Siege", "FPS (First-Person Shooter)", "76", "PS5, Xbox Series X/S, PC"],
-             ["DOOM Eternal", "FPS (First-Person Shooter)", "89", "PS5, Xbox Series X/S, Nintendo Switch, PC"],
-             ["Titanfall 2", "FPS (First-Person Shooter)", "87", "PS5, Xbox Series X/S, PC"],
-             ["Apex Legends", "FPS (First-Person Shooter)", "81", "PS5, Xbox Series X/S, PC"],
-             ["The Outlast Trials", "Horror/Survival Horror", "72", "PC"],
-             ["Alan Wake 2", "Horror/Survival Horror", "89", "PS5, Xbox Series X/S, PC"],
-             ["Lethal Company", "Horror/Survival Horror", "N/A", "PC"],
-             ["Amnesia: The Bunker", "Horror/Survival Horror", "77", "PS5, Xbox Series X/S, PC"],
-             ["Resident Evil 4 (2023)", "Horror/Survival Horror", "92", "PS5, Xbox Series X/S, PC"],
-             ["Sons of the Forest", "Horror/Survival Horror", "78", "PC"]]
+# Inserting platforms into a LinkedList
+def insert_platforms():
+    platform_list = LinkedList()
+    for platform in platforms:
+        platform_list.insert_beginning(platform)
+    return platform_list
 
-def get_recommendations():
+# Inserting games into a LinkedList
+
+def insert_game_data():
+    game_data_list = LinkedList()
+    for genre in genres:
+        genre_sublist = LinkedList()
+        for platform in platforms:
+            platform_sublist = LinkedList()
+            for game in game_data:
+                if game[1] == genre and game[3] == platform:
+                    genre_sublist.insert_beginning(game)
+                    platform_sublist.insert_beginning(game)
+            game_data_list.insert_beginning(genre_sublist)
+            game_data_list.insert_beginning(platform_sublist)
+    return game_data_list
+                    
+my_genre_list = insert_genres()
+my_platform_list = insert_platforms()
+my_game_list = insert_game_data()
+
+selected_genre = ""
+selected_platform = ""
+
+while len(selected_genre) == 0:
+    user_input = str(input("\nType the beginning of a game genre and press enter to see if it's in our data."
+                           "\nMake sure to narrow your search down to one specific genre: \n")).title()
+    matching_genres = []
+    genre_list_head = my_genre_list.get_head_node()
+    while genre_list_head is not None:
+        if str(genre_list_head.get_value()).startswith(user_input):
+            matching_genres.append(genre_list_head.get_value())
+        genre_list_head = genre_list_head.get_next_node()
+        
+
+    for genre in matching_genres:
+        print("\n" + genre)
     
+    if len(matching_genres) == 1:
+        select_genre = str(input(
+            "\nThe only genre that matches your input is " + matching_genres[0] + ".\nDo you want to look at " + 
+            matching_genres[0] + " games? Enter Y for Yes and N for no\n")).upper()
+        
+        if select_genre == "Y":
+            selected_genre = matching_genres[0]
+            print("\nSelected Genre Type: " + selected_genre)
+            print("\nNow you must pick which platform you are playing on.")
+            while len(selected_platform) == 0:
+                user_input_2 = str(input(
+                "\nType the beginning of your chosen platform and press enter to see if it's in our data."
+                "\nAgain, make sure to narrow your search down to one specific platform: \n")).upper()
+                matching_platforms = []
+                platform_list_head = my_platform_list.get_head_node()
+                while platform_list_head is not None:
+                    if str(platform_list_head.get_value()).startswith(user_input_2):
+                        matching_platforms.append(platform_list_head.get_value())
+                    platform_list_head = platform_list_head.get_next_node()
+                
+                for platform in matching_platforms:
+                    print("\n" + platform)
+
+                if len(matching_platforms) == 1:
+                    select_platform = str(input(
+                        "\nThe only platform that matches your input is " + matching_platforms[0] + ".\nDo you want to look at " +
+                        selected_genre + " games on " + matching_platforms[0] + "? Enter Y for Yes and N for no\n")).upper()
+                    if select_platform == "Y":
+                        selected_platform = matching_platforms[0]
+                        print("Selected Platform: " + selected_platform)
+
+
+            game_list_head = my_game_list.get_head_node()
+            while game_list_head.get_next_node() is not None:
+                sublist_head = game_list_head.get_value().get_head_node()
+                if sublist_head.get_value()[1] == selected_genre and selected_platform in sublist_head.get_value():
+                    while sublist_head.get_next_node() is not None:
+                        print("\nName: " + sublist_head.get_value()[0])
+                        print("Genre: " + sublist_head.get_value()[1])
+                        print("OpenCritic Score: " + sublist_head.get_value()[2] + "/100")
+                        print("Platforms: " + sublist_head.get_value()[3] + "\n")
+                        sublist_head = sublist_head.get_next_node()
+                game_list_head = game_list_head.get_next_node()
+            
+                repeat_loop = str(input("Would you like to search for games in another genre or platform? Enter Y for Yes and N for No.\n")).upper()
+                if repeat_loop == "Y":
+                    selected_genre = ""
