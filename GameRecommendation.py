@@ -21,16 +21,12 @@ def insert_game_data():
     game_data_list = LinkedList()
     for genre in genres:
         genre_sublist = LinkedList()
-        for platform in platforms:
-            platform_sublist = LinkedList()
-            for game in game_data:
-                if game[1] == genre and game[3] == platform:
-                    genre_sublist.insert_beginning(game)
-                    platform_sublist.insert_beginning(game)
-            game_data_list.insert_beginning(genre_sublist)
-            game_data_list.insert_beginning(platform_sublist)
+        for game in game_data:
+            if game[1] == genre:
+                genre_sublist.insert_beginning(game)
+        game_data_list.insert_beginning(genre_sublist)
     return game_data_list
-                    
+
 my_genre_list = insert_genres()
 my_platform_list = insert_platforms()
 my_game_list = insert_game_data()
@@ -82,20 +78,21 @@ while len(selected_genre) == 0:
                     if select_platform == "Y":
                         selected_platform = matching_platforms[0]
                         print("Selected Platform: " + selected_platform)
-
-
-            game_list_head = my_game_list.get_head_node()
-            while game_list_head.get_next_node() is not None:
-                sublist_head = game_list_head.get_value().get_head_node()
-                if sublist_head.get_value()[1] == selected_genre and selected_platform in sublist_head.get_value():
-                    while sublist_head.get_next_node() is not None:
-                        print("\nName: " + sublist_head.get_value()[0])
-                        print("Genre: " + sublist_head.get_value()[1])
-                        print("OpenCritic Score: " + sublist_head.get_value()[2] + "/100")
-                        print("Platforms: " + sublist_head.get_value()[3] + "\n")
-                        sublist_head = sublist_head.get_next_node()
-                game_list_head = game_list_head.get_next_node()
-            
-                repeat_loop = str(input("Would you like to search for games in another genre or platform? Enter Y for Yes and N for No.\n")).upper()
-                if repeat_loop == "Y":
-                    selected_genre = ""
+                        game_list_head = my_game_list.get_head_node()
+                        while game_list_head.get_next_node() is not None:
+                            sublist_head = game_list_head.get_value().get_head_node()
+                            if sublist_head.get_value()[1] == selected_genre:
+                                if selected_platform in sublist_head.get_value()[3]:
+                                    while sublist_head.get_next_node() is not None:
+                                        print("\nName: " + sublist_head.get_value()[0])
+                                        print("Genre: " + sublist_head.get_value()[1])
+                                        print("OpenCritic Score: " + sublist_head.get_value()[2] + "/100")
+                                        print("Platforms: " + sublist_head.get_value()[3] + "\n")
+                                        sublist_head = sublist_head.get_next_node()
+                            game_list_head = game_list_head.get_next_node()
+                        
+                        repeat_loop = str(input("Would you like to search for games in another genre or platform? Enter Y for Yes and N for No.\n")).upper()
+                        if repeat_loop == "Y":
+                            selected_genre = ""
+                            selected_platform = ""
+                            
