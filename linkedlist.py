@@ -33,3 +33,16 @@ class LinkedList:
                     current_node = None
                 else:
                     current_node = next_node
+
+    def delete_duplicates(self):
+        current_node = self.head_node
+        prev = None
+        duplicate_dict = {}
+        while current_node:
+            if current_node.get_value() not in duplicate_dict:
+                duplicate_dict[current_node.get_value()] = None
+                prev = current_node
+            else:
+                prev.set_next_node = current_node.get_next_node
+            
+            current_node = current_node.get_next_node
