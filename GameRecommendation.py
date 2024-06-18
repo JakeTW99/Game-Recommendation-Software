@@ -9,7 +9,6 @@ def insert_genres():
     return genre_list
 
 # Inserting games into a LinkedList
-
 def insert_game_data():
     game_data_list = LinkedList()
     for genre in genres:
@@ -20,12 +19,13 @@ def insert_game_data():
         game_data_list.insert_beginning(genre_sublist)
     return game_data_list
 
-
+#Defining lists for genres and games
 my_genre_list = insert_genres()
 my_game_list = insert_game_data()
 
 selected_genre = ""
 
+#Loops through matching genres when user input is provided
 while len(selected_genre) == 0:
     user_input = str(input("\nType the beginning of a game genre and press enter to see if it's in our database."
                            "\nMake sure to narrow your search down to one specific genre: \n")).title()
@@ -39,12 +39,14 @@ while len(selected_genre) == 0:
 
     for genre in matching_genres:
         print("\n" + genre)
-    
+
+    #Waits for the user to narrow down their search to just one genre
     if len(matching_genres) == 1:
         select_genre = str(input(
             "\nThe only genre that matches your input is " + matching_genres[0] + ".\nDo you want to look at " + 
             matching_genres[0] + " games? Enter Y for Yes and N for no\n")).upper()
         
+        #Once user selects their desired genre, the program prints out the games associated with it
         if select_genre == "Y":
             selected_genre = matching_genres[0]
             print("\nSelected Genre Type: " + selected_genre)
@@ -59,7 +61,8 @@ while len(selected_genre) == 0:
                         print("Platforms: " + sublist_head.get_value()[3] + "\n")
                         sublist_head = sublist_head.get_next_node()
                 game_list_head = game_list_head.get_next_node()
-                
+
+            #User has the option to restart and select a differnet genre before ending the program
             repeat_loop = str(input("\nWould you like to find games from a different genre? Enter Y for Yes and N for No.\n")).upper()
             if repeat_loop == "Y":
                 selected_genre = ""
